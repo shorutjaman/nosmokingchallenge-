@@ -1,0 +1,507 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>🚭 No More Cigarettes</title>
+    <!-- Exo 2 font -->
+    <link href="https://fonts.googleapis.com/css2?family=Exo+2:wght@400;600;800&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Exo 2', sans-serif;
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background: radial-gradient(circle at 30% 20%, #0e2f3a, #031016);
+            color: #ecfdf9;
+            padding: 1.8rem;
+            position: relative;
+            overflow-x: hidden;
+        }
+
+        /* larger smoke particles */
+        .smoke-particle {
+            position: absolute;
+            bottom: -80px;
+            background: rgba(160, 250, 240, 0.08);
+            border-radius: 70% 20% 60% 40%;
+            filter: blur(14px);
+            pointer-events: none;
+            z-index: 0;
+            animation: riseBig 26s linear infinite;
+            box-shadow: 0 0 40px #2affd0;
+        }
+
+        @keyframes riseBig {
+            0% { transform: translateY(0) rotate(0deg) scale(0.7); opacity: 0.1; }
+            50% { opacity: 0.35; transform: translateY(-50vh) rotate(120deg) scale(1.4); }
+            100% { transform: translateY(-100vh) rotate(240deg) scale(0.9); opacity: 0; }
+        }
+
+        .glow-orb-large {
+            position: absolute;
+            width: 550px;
+            height: 550px;
+            background: radial-gradient(circle at 30% 40%, #23d8c0, transparent 85%);
+            border-radius: 50%;
+            filter: blur(110px);
+            opacity: 0.1;
+            animation: floatBig 30s infinite alternate;
+            z-index: 0;
+        }
+
+        @keyframes floatBig {
+            0% { transform: translate(-6%, -4%) scale(1); }
+            100% { transform: translate(7%, 8%) scale(1.25); }
+        }
+
+        /* main container — larger */
+        .container {
+            position: relative;
+            z-index: 25;
+            max-width: 1400px;
+            width: 100%;
+            background: rgba(5, 28, 35, 0.75);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border: 2px solid #17cfba;
+            border-radius: 80px;
+            padding: 4rem 3.5rem;
+            box-shadow: 0 40px 90px #000000cc, 0 0 0 2px #74ffe1 inset;
+            transition: 0.3s;
+        }
+
+        .container:hover {
+            box-shadow: 0 50px 100px #2cffe6, 0 0 0 3px #eaffb0 inset;
+        }
+
+        h1 {
+            font-size: clamp(4rem, 12vw, 6rem);
+            font-weight: 800;
+            letter-spacing: 2px;
+            background: linear-gradient(150deg, #faffd0, #b2fff0);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            margin-bottom: 0.4rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;  /* This centers the content horizontally */
+            gap: 25px;
+            line-height: 1.2;
+            text-align: center;       /* Ensures text inside is centered */
+            width: 100%;              /* Takes full width for proper centering */
+        }
+
+        h1 span {
+            font-size: 5.8rem;
+            filter: drop-shadow(0 0 20px #7cffdd);
+        }
+
+        .current-time-card {
+            background: #072e36e6;
+            border-radius: 90px;
+            padding: 1.3rem 3rem;
+            margin: 1.5rem auto 2rem auto;
+            width: fit-content;
+            border: 2px solid #35e6d0;
+            font-size: 2.1rem;
+            font-weight: 600;
+            color: #e3fff9;
+            box-shadow: 0 0 40px #36ffd5;
+            backdrop-filter: blur(10px);
+        }
+
+        /* quit row — fixed, no picker, just static */
+        .quit-row {
+            display: flex;
+            flex-wrap: wrap;
+            align-items: center;
+            justify-content: center;
+            gap: 1.5rem 2.5rem;
+            background: #022a33aa;
+            border-radius: 90px;
+            padding: 1.6rem 3.5rem;
+            margin-bottom: 3rem;
+            border: 2px solid #2acfbb;
+            font-size: 2rem;
+        }
+
+        .quit-label {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+            color: #befff3;
+            font-weight: 600;
+        }
+
+        .quit-label i {
+            font-size: 2.8rem;
+        }
+
+        .fixed-date {
+            background: #0e4550;
+            border: 2px solid #5affe6;
+            padding: 1.2rem 2.8rem;
+            border-radius: 80px;
+            font-size: 2rem;
+            font-weight: 600;
+            color: #f6ffe0;
+            box-shadow: 0 0 20px #3dffd0;
+            letter-spacing: 1px;
+        }
+
+        /* counter grid — very large */
+        .counter-grid {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 2.2rem;
+            margin: 3.5rem 0 3.5rem;
+        }
+
+        .stat-tile {
+            background: #0c3843cc;
+            backdrop-filter: blur(12px);
+            border-radius: 70px;
+            padding: 2.5rem 2rem;
+            min-width: 180px;
+            flex: 1 0 160px;
+            border: 2px solid #42decb;
+            box-shadow: 0 18px 35px -10px black;
+            transition: 0.2s;
+            text-align: center;
+        }
+
+        .stat-tile:hover {
+            transform: translateY(-12px) scale(1.05);
+            border-color: #f7ffad;
+            box-shadow: 0 35px 45px -6px #71ffe6;
+        }
+
+        .digit {
+            font-size: 6rem;
+            font-weight: 800;
+            line-height: 1;
+            background: linear-gradient(145deg, #fff9b0, #c6ffe6);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            display: inline-block;
+            transition: transform 0.2s cubic-bezier(0.2, 1.6, 0.5, 1.2);
+            font-family: 'Exo 2', sans-serif;
+        }
+
+        .pop {
+            animation: bigPop 0.3s ease-out;
+        }
+
+        @keyframes bigPop {
+            0% { transform: scale(1); }
+            40% { transform: scale(1.8); color: #ffffdd; }
+            100% { transform: scale(1); }
+        }
+
+        .label {
+            text-transform: uppercase;
+            letter-spacing: 3px;
+            font-size: 1.6rem;
+            font-weight: 600;
+            color: #bcfaf0;
+            margin-top: 16px;
+        }
+
+        /* benefit panel */
+        .benefit-panel {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 2.2rem;
+            justify-content: space-between;
+            margin: 3.5rem 0 2.5rem;
+        }
+
+        .card {
+            background: #083e4bb3;
+            border-radius: 70px;
+            padding: 2.4rem 2.5rem;
+            flex: 1 1 270px;
+            border: 2px solid #3bcbbc;
+            backdrop-filter: blur(8px);
+            display: flex;
+            align-items: center;
+            gap: 30px;
+            transition: 0.25s;
+        }
+
+        .card:hover {
+            background: #0e5766dd;
+            border-color: #ecffb0;
+        }
+
+        .card-icon {
+            font-size: 4.8rem;
+            filter: drop-shadow(0 0 15px #a1ffe6);
+        }
+
+        .card-content {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .card-value {
+            font-size: 4.4rem;
+            font-weight: 800;
+            line-height: 1.1;
+            color: #ffffce;
+            font-family: 'Exo 2', sans-serif;
+        }
+
+        .card-label {
+            font-size: 1.8rem;
+            font-weight: 600;
+            color: #c9fff0;
+        }
+
+        .small-note {
+            font-size: 1.3rem;
+            opacity: 0.7;
+        }
+
+        .reset-note {
+            margin-top: 2.8rem;
+            font-size: 2rem;
+            color: #dafff0;
+            border-bottom: 2px dashed #3ea296;
+            padding-bottom: 1rem;
+            font-weight: 500;
+        }
+
+        .live-indicator {
+            display: inline-block;
+            width: 24px;
+            height: 24px;
+            background: #3effb3;
+            border-radius: 50%;
+            margin-right: 15px;
+            animation: pulseBig 1.5s infinite;
+        }
+
+        @keyframes pulseBig {
+            0% { opacity: 0.5; box-shadow: 0 0 10px #3effb3; }
+            50% { opacity: 1; box-shadow: 0 0 35px #aeffd5; }
+            100% { opacity: 0.5; box-shadow: 0 0 10px #3effb3; }
+        }
+    </style>
+</head>
+<body>
+
+<!-- background smoke (dynamic) -->
+<script>
+    (function() {
+        for (let i = 0; i < 26; i++) {
+            const p = document.createElement('div');
+            p.className = 'smoke-particle';
+            const size = 45 + Math.random() * 120;
+            p.style.width = size + 'px';
+            p.style.height = size * (0.5 + Math.random() * 0.5) + 'px';
+            p.style.left = Math.random() * 100 + '%';
+            p.style.animationDuration = 20 + Math.random() * 30 + 's';
+            p.style.animationDelay = Math.random() * -20 + 's';
+            p.style.background = `rgba(160, 250, 235, ${0.02 + Math.random() * 0.1})`;
+            p.style.filter = `blur(${10 + Math.random() * 20}px)`;
+            document.body.appendChild(p);
+        }
+        for (let i = 0; i < 6; i++) {
+            const orb = document.createElement('div');
+            orb.className = 'glow-orb-large';
+            orb.style.left = Math.random() * 70 + '%';
+            orb.style.top = Math.random() * 70 + '%';
+            orb.style.background = `radial-gradient(circle at 20% 20%, ${i % 2 ? '#8affc0' : '#42cfc0'}, transparent 80%)`;
+            orb.style.animationDuration = 24 + i * 7 + 's';
+            document.body.appendChild(orb);
+        }
+    })();
+</script>
+
+<div class="container">
+    <!-- header: NO MORE CIGARETTES - perfectly centered -->
+    <h1>
+        <span>🚭</span> NO MORE CIGARETTES <span>🌿</span>
+    </h1>
+
+    <!-- current time in requested format: Friday, 06 March 2026 at 20:00:00 style -->
+    <div class="current-time-card" id="currentTimeDisplay">
+        <span class="live-indicator"></span> loading time...
+    </div>
+
+    <!-- quit row with fixed date (Friday, 06 March 2026 at 20:00:00) -->
+    <div class="quit-row">
+        <div class="quit-label">
+            <i>📆</i> 🚭 No Smoke From:
+        </div>
+        <div class="fixed-date" id="fixedQuitDisplay">Tuesday, 10 March 2026 at 22:30:00</div>
+    </div>
+
+    <!-- main rolling counters -->
+    <div class="counter-grid">
+        <div class="stat-tile"><span class="digit" id="years">0</span><div class="label">years</div></div>
+        <div class="stat-tile"><span class="digit" id="months">0</span><div class="label">months</div></div>
+        <div class="stat-tile"><span class="digit" id="days">0</span><div class="label">days</div></div>
+        <div class="stat-tile"><span class="digit" id="hours">0</span><div class="label">hours</div></div>
+        <div class="stat-tile"><span class="digit" id="minutes">0</span><div class="label">minutes</div></div>
+        <div class="stat-tile"><span class="digit" id="seconds">0</span><div class="label">seconds</div></div>
+    </div>
+
+    <!-- benefit panel: 5/day, 10 taka each, health score -->
+    <div class="benefit-panel">
+        <div class="card">
+            <div class="card-icon">🚬</div>
+            <div class="card-content">
+                <span class="card-value" id="cigarettesAvoided">0</span>
+                <span class="card-label">Cigarettes Avoided</span>
+                <span class="small-note">(5/day)</span>
+            </div>
+        </div>
+        <div class="card">
+            <div class="card-icon">💰</div>
+            <div class="card-content">
+                <span class="card-value" id="moneySaved">0</span>
+                <span class="card-label">Money Saved</span>
+                <span class="small-note">(10 tk/cig)</span>
+            </div>
+        </div>
+        <div class="card">
+            <div class="card-icon">❤️</div>
+            <div class="card-content">
+                <span class="card-value" id="healthGain">0</span>
+                <span class="card-label">Health Score</span>
+                <span class="small-note">(Minutes Regained)</span>
+            </div>
+        </div>
+    </div>
+
+    <!-- fixed start message -->
+    <div class="reset-note" id="startText">
+        ⏱️ No Smoke From: <span id="startDateLabel">Tuesday, 10 March 2026 at 22:30:00</span> (Bangladesh)
+    </div>
+</div>
+
+<script>
+    (function() {
+        // DOM elements
+        const currentTimeEl = document.getElementById('currentTimeDisplay');
+        const yearsEl = document.getElementById('years');
+        const monthsEl = document.getElementById('months');
+        const daysEl = document.getElementById('days');
+        const hoursEl = document.getElementById('hours');
+        const minutesEl = document.getElementById('minutes');
+        const secondsEl = document.getElementById('seconds');
+        const cigarettesEl = document.getElementById('cigarettesAvoided');
+        const moneyEl = document.getElementById('moneySaved');
+        const healthEl = document.getElementById('healthGain');
+        const startDateLabel = document.getElementById('startDateLabel');
+        const fixedQuitDisplay = document.getElementById('fixedQuitDisplay');
+
+        // --- FIXED QUIT DATE: Tuesday, 10 March 2026 at 22:30:00 Bangladesh (UTC+6) ---
+        const startDate = new Date("2026-03-10T22:30:00+06:00");  // March 10, 22:30 Dhaka
+        
+        // display fixed date in both places (already hardcoded, but ensure consistency)
+        const fixedDateString = "Tuesday, 10 March 2026 at 22:30:00";
+        if (fixedQuitDisplay) fixedQuitDisplay.textContent = fixedDateString;
+        if (startDateLabel) startDateLabel.textContent = fixedDateString;
+
+        // --- user parameters ---
+        const CIGS_PER_DAY = 5;            // 5 cigarettes per day
+        const PRICE_PER_CIG = 10;           // 10 taka each
+        const HEALTH_PER_CIG = 11;           // fictional health minutes
+
+        // helper: format current time exactly as "Friday, 06 March 2026 at 20:00:00"
+        function formatCurrentBangladesh(date) {
+            return date.toLocaleString('en-GB', {
+                weekday: 'long',
+                day: '2-digit',
+                month: 'long',
+                year: 'numeric',
+                hour: '2-digit',
+                minute: '2-digit',
+                second: '2-digit',
+                timeZone: 'Asia/Dhaka',
+                hour12: false
+            }).replace(',', ' at');
+        }
+
+        // pop animation
+        function animateDigit(el, newValue) {
+            if (el.textContent !== String(newValue)) {
+                el.textContent = newValue;
+                el.classList.remove('pop');
+                void el.offsetWidth;
+                el.classList.add('pop');
+            }
+        }
+
+        // main update
+        function updateCounter() {
+            const now = new Date();
+
+            // current time in required format
+            currentTimeEl.innerHTML = `<span class="live-indicator"></span> ${formatCurrentBangladesh(now)}`;
+
+            // difference in seconds (UTC)
+            const diffSec = Math.floor((now.getTime() - startDate.getTime()) / 1000);
+
+            if (diffSec < 0) {
+                // not started yet (should not happen after march 6 2026, but just in case)
+                ['years','months','days','hours','minutes','seconds'].forEach(id => {
+                    document.getElementById(id).textContent = '0';
+                });
+                cigarettesEl.textContent = '0';
+                moneyEl.textContent = '0';
+                healthEl.textContent = '0';
+                return;
+            }
+
+            // time units
+            let seconds = diffSec % 60;
+            let totalMinutes = Math.floor(diffSec / 60);
+            let minutes = totalMinutes % 60;
+            let totalHours = Math.floor(totalMinutes / 60);
+            let hours = totalHours % 24;
+            let totalDays = Math.floor(totalHours / 24);
+            let days = totalDays % 30;
+            let totalMonths = Math.floor(totalDays / 30);
+            let months = totalMonths % 12;
+            let years = Math.floor(totalMonths / 12);
+
+            animateDigit(yearsEl, years);
+            animateDigit(monthsEl, months);
+            animateDigit(daysEl, days);
+            animateDigit(hoursEl, hours);
+            animateDigit(minutesEl, minutes);
+            animateDigit(secondsEl, seconds);
+
+            // benefits based on 5/day, 10 taka
+            const totalDaysFloat = totalDays + (hours/24) + (minutes/1440) + (seconds/86400);
+            const cigarettesAvoided = Math.floor(totalDaysFloat * CIGS_PER_DAY);
+            const moneySaved = cigarettesAvoided * PRICE_PER_CIG;
+            const healthScore = cigarettesAvoided * HEALTH_PER_CIG; 
+
+            animateDigit(cigarettesEl, cigarettesAvoided.toLocaleString());
+            animateDigit(moneyEl, moneySaved.toLocaleString());
+            animateDigit(healthEl, healthScore.toLocaleString());
+        }
+
+        // initial update and interval
+        updateCounter();
+        setInterval(updateCounter, 1000);
+    })();
+</script>
+</body>
+                  </html>
