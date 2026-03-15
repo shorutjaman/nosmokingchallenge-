@@ -17,32 +17,71 @@
             font-family: 'Exo 2', sans-serif;
             min-height: 100vh;
             display: flex;
+            flex-direction: column;
             justify-content: center;
             align-items: center;
             background: radial-gradient(circle at 30% 20%, #0e2f3a, #031016);
             color: #ecfdf9;
-            padding: 1.8rem;
+            padding: 2rem;
             position: relative;
             overflow-x: hidden;
         }
 
-        /* larger smoke particles */
+        /* ========== ENHANCED SMOKY EFFECTS (same as before, no container box) ========== */
         .smoke-particle {
             position: absolute;
             bottom: -80px;
-            background: rgba(160, 250, 240, 0.08);
+            background: rgba(180, 250, 240, 0.1);
             border-radius: 70% 20% 60% 40%;
-            filter: blur(14px);
+            filter: blur(18px);
             pointer-events: none;
             z-index: 0;
             animation: riseBig 26s linear infinite;
-            box-shadow: 0 0 40px #2affd0;
+            box-shadow: 0 0 60px #5effe6;
+            mix-blend-mode: screen;
         }
 
         @keyframes riseBig {
-            0% { transform: translateY(0) rotate(0deg) scale(0.7); opacity: 0.1; }
-            50% { opacity: 0.35; transform: translateY(-50vh) rotate(120deg) scale(1.4); }
-            100% { transform: translateY(-100vh) rotate(240deg) scale(0.9); opacity: 0; }
+            0% { transform: translateY(0) rotate(0deg) scale(0.6); opacity: 0.15; }
+            40% { opacity: 0.4; transform: translateY(-40vh) rotate(120deg) scale(1.3); }
+            100% { transform: translateY(-90vh) rotate(240deg) scale(0.8); opacity: 0; }
+        }
+
+        .smoke-trail {
+            position: absolute;
+            bottom: 0;
+            width: 6px;
+            height: 60px;
+            background: linear-gradient(to top, rgba(210,255,240,0.3), transparent);
+            filter: blur(8px);
+            border-radius: 40%;
+            animation: trailRise 12s ease-out infinite;
+            pointer-events: none;
+            z-index: 1;
+        }
+
+        @keyframes trailRise {
+            0% { transform: translateY(0) scaleX(1); opacity: 0.4; }
+            100% { transform: translateY(-500px) scaleX(2.5); opacity: 0; }
+        }
+
+        .cigarette-ash {
+            position: absolute;
+            width: 12px;
+            height: 12px;
+            background: rgba(255, 220, 180, 0.2);
+            border-radius: 40% 60% 30% 70%;
+            filter: blur(6px);
+            transform: rotate(45deg);
+            animation: ashFloat 18s infinite linear;
+            pointer-events: none;
+            z-index: 0;
+            box-shadow: 0 0 15px #ffb67440;
+        }
+
+        @keyframes ashFloat {
+            0% { transform: translateY(100vh) rotate(0deg) scale(0.8); opacity: 0.2; }
+            100% { transform: translateY(-300px) rotate(360deg) scale(1.6); opacity: 0; }
         }
 
         .glow-orb-large {
@@ -51,10 +90,11 @@
             height: 550px;
             background: radial-gradient(circle at 30% 40%, #23d8c0, transparent 85%);
             border-radius: 50%;
-            filter: blur(110px);
-            opacity: 0.1;
+            filter: blur(120px);
+            opacity: 0.12;
             animation: floatBig 30s infinite alternate;
             z-index: 0;
+            mix-blend-mode: soft-light;
         }
 
         @keyframes floatBig {
@@ -62,26 +102,7 @@
             100% { transform: translate(7%, 8%) scale(1.25); }
         }
 
-        /* main container — larger */
-        .container {
-            position: relative;
-            z-index: 25;
-            max-width: 1400px;
-            width: 100%;
-            background: rgba(5, 28, 35, 0.75);
-            backdrop-filter: blur(16px);
-            -webkit-backdrop-filter: blur(16px);
-            border: 2px solid #17cfba;
-            border-radius: 80px;
-            padding: 4rem 3.5rem;
-            box-shadow: 0 40px 90px #000000cc, 0 0 0 2px #74ffe1 inset;
-            transition: 0.3s;
-        }
-
-        .container:hover {
-            box-shadow: 0 50px 100px #2cffe6, 0 0 0 3px #eaffb0 inset;
-        }
-
+        /* header styling - no box, just floating */
         h1 {
             font-size: clamp(4rem, 12vw, 6rem);
             font-weight: 800;
@@ -90,21 +111,37 @@
             -webkit-background-clip: text;
             background-clip: text;
             color: transparent;
-            margin-bottom: 0.4rem;
+            margin: 0 0 0.5rem 0;
             display: flex;
             align-items: center;
-            justify-content: center;  /* This centers the content horizontally */
+            justify-content: center;
             gap: 25px;
             line-height: 1.2;
-            text-align: center;       /* Ensures text inside is centered */
-            width: 100%;              /* Takes full width for proper centering */
+            text-align: center;
+            width: 100%;
+            filter: drop-shadow(0 0 15px #74ffe1) drop-shadow(0 0 40px #287466);
+            animation: textSmoke 4s infinite alternate ease-in-out;
+            position: relative;
+            z-index: 10;
+        }
+
+        @keyframes textSmoke {
+            0% { filter: drop-shadow(0 0 10px #5effe0) drop-shadow(0 0 30px #206e60); }
+            100% { filter: drop-shadow(0 0 25px #bbffec) drop-shadow(0 0 60px #359985); }
         }
 
         h1 span {
             font-size: 5.8rem;
             filter: drop-shadow(0 0 20px #7cffdd);
+            animation: emojiDrift 5s infinite alternate;
         }
 
+        @keyframes emojiDrift {
+            0% { transform: translateY(0); }
+            100% { transform: translateY(-8px) translateX(4px); }
+        }
+
+        /* time card - no outer container, just floating elements */
         .current-time-card {
             background: #072e36e6;
             border-radius: 90px;
@@ -115,11 +152,20 @@
             font-size: 2.1rem;
             font-weight: 600;
             color: #e3fff9;
-            box-shadow: 0 0 40px #36ffd5;
+            box-shadow: 0 0 40px #36ffd5, 0 0 120px #008b7a;
             backdrop-filter: blur(10px);
+            animation: cardPulse 6s infinite;
+            position: relative;
+            z-index: 10;
         }
 
-        /* quit row — fixed, no picker, just static */
+        @keyframes cardPulse {
+            0% { box-shadow: 0 0 30px #2bffe0, 0 0 90px #007f6e; }
+            50% { box-shadow: 0 0 60px #a3ffe6, 0 0 150px #29c2b0; }
+            100% { box-shadow: 0 0 30px #2bffe0, 0 0 90px #007f6e; }
+        }
+
+        /* quit row - no outer container */
         .quit-row {
             display: flex;
             flex-wrap: wrap;
@@ -129,9 +175,14 @@
             background: #022a33aa;
             border-radius: 90px;
             padding: 1.6rem 3.5rem;
-            margin-bottom: 3rem;
+            margin: 0 auto 3rem auto;
+            width: fit-content;
             border: 2px solid #2acfbb;
             font-size: 2rem;
+            backdrop-filter: blur(8px);
+            box-shadow: 0 0 50px #2cbba8;
+            position: relative;
+            z-index: 10;
         }
 
         .quit-label {
@@ -154,17 +205,20 @@
             font-size: 2rem;
             font-weight: 600;
             color: #f6ffe0;
-            box-shadow: 0 0 20px #3dffd0;
-            letter-spacing: 1px;
+            box-shadow: 0 0 30px #3dffd0, 0 0 90px #127a6b;
         }
 
-        /* counter grid — very large */
+        /* counter grid - completely free, no surrounding box */
         .counter-grid {
             display: flex;
             flex-wrap: wrap;
             justify-content: center;
             gap: 2.2rem;
-            margin: 3.5rem 0 3.5rem;
+            margin: 3rem auto 3rem auto;
+            max-width: 1400px;
+            width: 100%;
+            position: relative;
+            z-index: 10;
         }
 
         .stat-tile {
@@ -175,7 +229,7 @@
             min-width: 180px;
             flex: 1 0 160px;
             border: 2px solid #42decb;
-            box-shadow: 0 18px 35px -10px black;
+            box-shadow: 0 18px 35px -10px black, 0 0 30px #2fc6b2;
             transition: 0.2s;
             text-align: center;
         }
@@ -183,7 +237,7 @@
         .stat-tile:hover {
             transform: translateY(-12px) scale(1.05);
             border-color: #f7ffad;
-            box-shadow: 0 35px 45px -6px #71ffe6;
+            box-shadow: 0 35px 45px -6px #71ffe6, 0 0 60px #7affe6;
         }
 
         .digit {
@@ -197,6 +251,7 @@
             display: inline-block;
             transition: transform 0.2s cubic-bezier(0.2, 1.6, 0.5, 1.2);
             font-family: 'Exo 2', sans-serif;
+            filter: drop-shadow(0 0 12px #b5ffec);
         }
 
         .pop {
@@ -205,7 +260,7 @@
 
         @keyframes bigPop {
             0% { transform: scale(1); }
-            40% { transform: scale(1.8); color: #ffffdd; }
+            40% { transform: scale(1.8); color: #ffffdd; filter: drop-shadow(0 0 30px white); }
             100% { transform: scale(1); }
         }
 
@@ -216,15 +271,20 @@
             font-weight: 600;
             color: #bcfaf0;
             margin-top: 16px;
+            text-shadow: 0 0 15px #2affe0;
         }
 
-        /* benefit panel */
+        /* benefit panel - no outer box */
         .benefit-panel {
             display: flex;
             flex-wrap: wrap;
             gap: 2.2rem;
-            justify-content: space-between;
-            margin: 3.5rem 0 2.5rem;
+            justify-content: center;
+            margin: 2.5rem auto 2.5rem auto;
+            max-width: 1400px;
+            width: 100%;
+            position: relative;
+            z-index: 10;
         }
 
         .card {
@@ -232,27 +292,31 @@
             border-radius: 70px;
             padding: 2.4rem 2.5rem;
             flex: 1 1 270px;
+            min-width: 280px;
             border: 2px solid #3bcbbc;
             backdrop-filter: blur(8px);
             display: flex;
             align-items: center;
             gap: 30px;
             transition: 0.25s;
+            box-shadow: 0 0 40px #218d7e;
         }
 
         .card:hover {
             background: #0e5766dd;
             border-color: #ecffb0;
+            box-shadow: 0 0 70px #7cffe6;
         }
 
         .card-icon {
             font-size: 4.8rem;
-            filter: drop-shadow(0 0 15px #a1ffe6);
+            filter: drop-shadow(0 0 20px #a1ffe6);
+            animation: iconWaft 5s infinite alternate;
         }
 
-        .card-content {
-            display: flex;
-            flex-direction: column;
+        @keyframes iconWaft {
+            0% { transform: translateY(0) rotate(0deg); }
+            100% { transform: translateY(-10px) rotate(5deg); }
         }
 
         .card-value {
@@ -261,6 +325,7 @@
             line-height: 1.1;
             color: #ffffce;
             font-family: 'Exo 2', sans-serif;
+            text-shadow: 0 0 20px #bbffe7;
         }
 
         .card-label {
@@ -274,13 +339,18 @@
             opacity: 0.7;
         }
 
+        /* footer note */
         .reset-note {
-            margin-top: 2.8rem;
+            margin: 2rem auto 1rem auto;
             font-size: 2rem;
             color: #dafff0;
             border-bottom: 2px dashed #3ea296;
             padding-bottom: 1rem;
             font-weight: 500;
+            text-shadow: 0 0 15px #2bffd0;
+            width: fit-content;
+            position: relative;
+            z-index: 10;
         }
 
         .live-indicator {
@@ -291,111 +361,142 @@
             border-radius: 50%;
             margin-right: 15px;
             animation: pulseBig 1.5s infinite;
+            box-shadow: 0 0 25px #00ffb3;
         }
 
         @keyframes pulseBig {
-            0% { opacity: 0.5; box-shadow: 0 0 10px #3effb3; }
-            50% { opacity: 1; box-shadow: 0 0 35px #aeffd5; }
-            100% { opacity: 0.5; box-shadow: 0 0 10px #3effb3; }
+            0% { opacity: 0.5; box-shadow: 0 0 10px #3effb3, 0 0 40px #02e2a4; }
+            50% { opacity: 1; box-shadow: 0 0 35px #aeffd5, 0 0 90px #36ffcf; }
+            100% { opacity: 0.5; box-shadow: 0 0 10px #3effb3, 0 0 40px #02e2a4; }
+        }
+
+        /* ensure content is above smoke */
+        .current-time-card, .quit-row, .counter-grid, .benefit-panel, .reset-note, h1 {
+            position: relative;
+            z-index: 20;
         }
     </style>
 </head>
 <body>
 
-<!-- background smoke (dynamic) -->
+<!-- ========== SMOKY BACKGROUND LAYERS (ENHANCED) ========== -->
 <script>
     (function() {
-        for (let i = 0; i < 26; i++) {
+        // large floating smoke particles
+        for (let i = 0; i < 30; i++) {
             const p = document.createElement('div');
             p.className = 'smoke-particle';
-            const size = 45 + Math.random() * 120;
+            const size = 50 + Math.random() * 150;
             p.style.width = size + 'px';
-            p.style.height = size * (0.5 + Math.random() * 0.5) + 'px';
+            p.style.height = size * (0.5 + Math.random() * 0.6) + 'px';
             p.style.left = Math.random() * 100 + '%';
-            p.style.animationDuration = 20 + Math.random() * 30 + 's';
+            p.style.animationDuration = 18 + Math.random() * 30 + 's';
             p.style.animationDelay = Math.random() * -20 + 's';
-            p.style.background = `rgba(160, 250, 235, ${0.02 + Math.random() * 0.1})`;
-            p.style.filter = `blur(${10 + Math.random() * 20}px)`;
+            p.style.background = `rgba(170, 250, 240, ${0.03 + Math.random() * 0.12})`;
+            p.style.filter = `blur(${12 + Math.random() * 24}px)`;
             document.body.appendChild(p);
         }
-        for (let i = 0; i < 6; i++) {
+
+        // thin smoke trails
+        for (let i = 0; i < 18; i++) {
+            const trail = document.createElement('div');
+            trail.className = 'smoke-trail';
+            trail.style.left = Math.random() * 100 + '%';
+            trail.style.width = 4 + Math.random() * 12 + 'px';
+            trail.style.height = 40 + Math.random() * 100 + 'px';
+            trail.style.animationDuration = 8 + Math.random() * 12 + 's';
+            trail.style.animationDelay = Math.random() * -10 + 's';
+            trail.style.background = `linear-gradient(to top, rgba(200,255,240,${0.1+Math.random()*0.2}), transparent)`;
+            document.body.appendChild(trail);
+        }
+
+        // floating ash
+        for (let i = 0; i < 24; i++) {
+            const ash = document.createElement('div');
+            ash.className = 'cigarette-ash';
+            ash.style.left = Math.random() * 100 + '%';
+            ash.style.width = 8 + Math.random() * 20 + 'px';
+            ash.style.height = ash.style.width;
+            ash.style.animationDuration = 12 + Math.random() * 18 + 's';
+            ash.style.animationDelay = Math.random() * -15 + 's';
+            ash.style.background = `rgba(255, 200, 150, ${0.1 + Math.random() * 0.15})`;
+            ash.style.filter = `blur(${4 + Math.random() * 10}px)`;
+            document.body.appendChild(ash);
+        }
+
+        // large glowing orbs
+        for (let i = 0; i < 7; i++) {
             const orb = document.createElement('div');
             orb.className = 'glow-orb-large';
-            orb.style.left = Math.random() * 70 + '%';
-            orb.style.top = Math.random() * 70 + '%';
-            orb.style.background = `radial-gradient(circle at 20% 20%, ${i % 2 ? '#8affc0' : '#42cfc0'}, transparent 80%)`;
-            orb.style.animationDuration = 24 + i * 7 + 's';
+            orb.style.left = Math.random() * 80 + '%';
+            orb.style.top = Math.random() * 80 + '%';
+            orb.style.background = `radial-gradient(circle at 30% 30%, ${i % 3 === 0 ? '#9effd0' : (i % 3 === 1 ? '#42cfc0' : '#d4ffb0')}, transparent 85%)`;
+            orb.style.animationDuration = 22 + i * 8 + 's';
+            orb.style.animationDelay = Math.random() * -10 + 's';
             document.body.appendChild(orb);
         }
     })();
 </script>
 
-<div class="container">
-    <!-- header: NO MORE CIGARETTES - perfectly centered -->
-    <h1>
-        <span>🚭</span> NO MORE CIGARETTES <span>🌿</span>
-    </h1>
+<!-- NO CONTAINER DIV - everything floats freely in the smoky background -->
 
-    <!-- current time in requested format: Friday, 06 March 2026 at 20:00:00 style -->
-    <div class="current-time-card" id="currentTimeDisplay">
-        <span class="live-indicator"></span> loading time...
+<h1>
+    <span>🚭</span> NO MORE CIGARETTES <span>🌿</span>
+</h1>
+
+<div class="current-time-card" id="currentTimeDisplay">
+    <span class="live-indicator"></span> loading time...
+</div>
+
+<div class="quit-row">
+    <div class="quit-label">
+        <i>📆</i> 🚭 No Smoke From:
     </div>
+    <div class="fixed-date" id="fixedQuitDisplay">Friday, 06 March 2026 at 20:00:00</div>
+</div>
 
-    <!-- quit row with fixed date (Friday, 06 March 2026 at 20:00:00) -->
-    <div class="quit-row">
-        <div class="quit-label">
-            <i>📆</i> 🚭 No Smoke From:
-        </div>
-        <div class="fixed-date" id="fixedQuitDisplay">Tuesday, 10 March 2026 at 22:30:00</div>
-    </div>
+<div class="counter-grid">
+    <div class="stat-tile"><span class="digit" id="years">0</span><div class="label">years</div></div>
+    <div class="stat-tile"><span class="digit" id="months">0</span><div class="label">months</div></div>
+    <div class="stat-tile"><span class="digit" id="days">0</span><div class="label">days</div></div>
+    <div class="stat-tile"><span class="digit" id="hours">0</span><div class="label">hours</div></div>
+    <div class="stat-tile"><span class="digit" id="minutes">0</span><div class="label">minutes</div></div>
+    <div class="stat-tile"><span class="digit" id="seconds">0</span><div class="label">seconds</div></div>
+</div>
 
-    <!-- main rolling counters -->
-    <div class="counter-grid">
-        <div class="stat-tile"><span class="digit" id="years">0</span><div class="label">years</div></div>
-        <div class="stat-tile"><span class="digit" id="months">0</span><div class="label">months</div></div>
-        <div class="stat-tile"><span class="digit" id="days">0</span><div class="label">days</div></div>
-        <div class="stat-tile"><span class="digit" id="hours">0</span><div class="label">hours</div></div>
-        <div class="stat-tile"><span class="digit" id="minutes">0</span><div class="label">minutes</div></div>
-        <div class="stat-tile"><span class="digit" id="seconds">0</span><div class="label">seconds</div></div>
-    </div>
-
-    <!-- benefit panel: 5/day, 10 taka each, health score -->
-    <div class="benefit-panel">
-        <div class="card">
-            <div class="card-icon">🚬</div>
-            <div class="card-content">
-                <span class="card-value" id="cigarettesAvoided">0</span>
-                <span class="card-label">Cigarettes Avoided</span>
-                <span class="small-note">(5/day)</span>
-            </div>
-        </div>
-        <div class="card">
-            <div class="card-icon">💰</div>
-            <div class="card-content">
-                <span class="card-value" id="moneySaved">0</span>
-                <span class="card-label">Money Saved</span>
-                <span class="small-note">(10 tk/cig)</span>
-            </div>
-        </div>
-        <div class="card">
-            <div class="card-icon">❤️</div>
-            <div class="card-content">
-                <span class="card-value" id="healthGain">0</span>
-                <span class="card-label">Health Score</span>
-                <span class="small-note">(Minutes Regained)</span>
-            </div>
+<div class="benefit-panel">
+    <div class="card">
+        <div class="card-icon">🚬</div>
+        <div class="card-content">
+            <span class="card-value" id="cigarettesAvoided">0</span>
+            <span class="card-label">Cigarettes Avoided</span>
+            <span class="small-note">(5/day)</span>
         </div>
     </div>
-
-    <!-- fixed start message -->
-    <div class="reset-note" id="startText">
-        ⏱️ No Smoke From: <span id="startDateLabel">Tuesday, 10 March 2026 at 22:30:00</span> (Bangladesh)
+    <div class="card">
+        <div class="card-icon">💰</div>
+        <div class="card-content">
+            <span class="card-value" id="moneySaved">0</span>
+            <span class="card-label">Taka Saved</span>
+            <span class="small-note">(10 tk/cig)</span>
+        </div>
     </div>
+    <div class="card">
+        <div class="card-icon">❤️</div>
+        <div class="card-content">
+            <span class="card-value" id="healthGain">0</span>
+            <span class="card-label">Health Score</span>
+            <span class="small-note">(Minutes Regained)</span>
+        </div>
+    </div>
+</div>
+
+<div class="reset-note" id="startText">
+    ⏱️ No Smoke From: <span id="startDateLabel">Friday, 06 March 2026 at 20:00:00</span> (Bangladesh)
 </div>
 
 <script>
     (function() {
-        // DOM elements
         const currentTimeEl = document.getElementById('currentTimeDisplay');
         const yearsEl = document.getElementById('years');
         const monthsEl = document.getElementById('months');
@@ -409,20 +510,17 @@
         const startDateLabel = document.getElementById('startDateLabel');
         const fixedQuitDisplay = document.getElementById('fixedQuitDisplay');
 
-        // --- FIXED QUIT DATE: Tuesday, 10 March 2026 at 22:30:00 Bangladesh (UTC+6) ---
-        const startDate = new Date("2026-03-10T22:30:00+06:00");  // March 10, 22:30 Dhaka
+        // FIXED QUIT DATE
+        const startDate = new Date("2026-03-06T20:00:00+06:00");
         
-        // display fixed date in both places (already hardcoded, but ensure consistency)
-        const fixedDateString = "Tuesday, 10 March 2026 at 22:30:00";
+        const fixedDateString = "Friday, 06 March 2026 at 20:00:00";
         if (fixedQuitDisplay) fixedQuitDisplay.textContent = fixedDateString;
         if (startDateLabel) startDateLabel.textContent = fixedDateString;
 
-        // --- user parameters ---
-        const CIGS_PER_DAY = 5;            // 5 cigarettes per day
-        const PRICE_PER_CIG = 10;           // 10 taka each
-        const HEALTH_PER_CIG = 11;           // fictional health minutes
+        const CIGS_PER_DAY = 5;
+        const PRICE_PER_CIG = 10;
+        const HEALTH_PER_CIG = 11;
 
-        // helper: format current time exactly as "Friday, 06 March 2026 at 20:00:00"
         function formatCurrentBangladesh(date) {
             return date.toLocaleString('en-GB', {
                 weekday: 'long',
@@ -437,7 +535,6 @@
             }).replace(',', ' at');
         }
 
-        // pop animation
         function animateDigit(el, newValue) {
             if (el.textContent !== String(newValue)) {
                 el.textContent = newValue;
@@ -447,18 +544,13 @@
             }
         }
 
-        // main update
         function updateCounter() {
             const now = new Date();
-
-            // current time in required format
             currentTimeEl.innerHTML = `<span class="live-indicator"></span> ${formatCurrentBangladesh(now)}`;
 
-            // difference in seconds (UTC)
             const diffSec = Math.floor((now.getTime() - startDate.getTime()) / 1000);
 
             if (diffSec < 0) {
-                // not started yet (should not happen after march 6 2026, but just in case)
                 ['years','months','days','hours','minutes','seconds'].forEach(id => {
                     document.getElementById(id).textContent = '0';
                 });
@@ -468,7 +560,6 @@
                 return;
             }
 
-            // time units
             let seconds = diffSec % 60;
             let totalMinutes = Math.floor(diffSec / 60);
             let minutes = totalMinutes % 60;
@@ -487,7 +578,6 @@
             animateDigit(minutesEl, minutes);
             animateDigit(secondsEl, seconds);
 
-            // benefits based on 5/day, 10 taka
             const totalDaysFloat = totalDays + (hours/24) + (minutes/1440) + (seconds/86400);
             const cigarettesAvoided = Math.floor(totalDaysFloat * CIGS_PER_DAY);
             const moneySaved = cigarettesAvoided * PRICE_PER_CIG;
@@ -498,10 +588,9 @@
             animateDigit(healthEl, healthScore.toLocaleString());
         }
 
-        // initial update and interval
         updateCounter();
         setInterval(updateCounter, 1000);
     })();
 </script>
 </body>
-                  </html>
+</html>
