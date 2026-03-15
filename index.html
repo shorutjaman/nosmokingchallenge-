@@ -2,8 +2,8 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>🚭 No More Cigarettes</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, user-scalable=yes">
+    <title>🚭 No More Cigarettes · fully responsive</title>
     <!-- Exo 2 font -->
     <link href="https://fonts.googleapis.com/css2?family=Exo+2:wght@400;600;800&display=swap" rel="stylesheet">
     <style>
@@ -22,12 +22,12 @@
             align-items: center;
             background: radial-gradient(circle at 30% 20%, #0e2f3a, #031016);
             color: #ecfdf9;
-            padding: 2rem;
+            padding: 1rem;
             position: relative;
             overflow-x: hidden;
         }
 
-        /* ========== ENHANCED SMOKY EFFECTS (same as before, no container box) ========== */
+        /* ========== SMOKE LAYERS (unchanged) ========== */
         .smoke-particle {
             position: absolute;
             bottom: -80px;
@@ -102,9 +102,9 @@
             100% { transform: translate(7%, 8%) scale(1.25); }
         }
 
-        /* header styling - no box, just floating */
+        /* ========== RESPONSIVE TYPOGRAPHY & SPACING ========== */
         h1 {
-            font-size: clamp(4rem, 12vw, 6rem);
+            font-size: clamp(2.2rem, 10vw, 6rem);
             font-weight: 800;
             letter-spacing: 2px;
             background: linear-gradient(150deg, #faffd0, #b2fff0);
@@ -113,9 +113,10 @@
             color: transparent;
             margin: 0 0 0.5rem 0;
             display: flex;
+            flex-wrap: wrap;
             align-items: center;
             justify-content: center;
-            gap: 25px;
+            gap: clamp(10px, 3vw, 25px);
             line-height: 1.2;
             text-align: center;
             width: 100%;
@@ -123,15 +124,11 @@
             animation: textSmoke 4s infinite alternate ease-in-out;
             position: relative;
             z-index: 10;
-        }
-
-        @keyframes textSmoke {
-            0% { filter: drop-shadow(0 0 10px #5effe0) drop-shadow(0 0 30px #206e60); }
-            100% { filter: drop-shadow(0 0 25px #bbffec) drop-shadow(0 0 60px #359985); }
+            padding: 0 0.5rem;
         }
 
         h1 span {
-            font-size: 5.8rem;
+            font-size: clamp(2.5rem, 10vw, 5.8rem);
             filter: drop-shadow(0 0 20px #7cffdd);
             animation: emojiDrift 5s infinite alternate;
         }
@@ -141,15 +138,21 @@
             100% { transform: translateY(-8px) translateX(4px); }
         }
 
-        /* time card - no outer container, just floating elements */
+        @keyframes textSmoke {
+            0% { filter: drop-shadow(0 0 10px #5effe0) drop-shadow(0 0 30px #206e60); }
+            100% { filter: drop-shadow(0 0 25px #bbffec) drop-shadow(0 0 60px #359985); }
+        }
+
+        /* time card - fully responsive */
         .current-time-card {
             background: #072e36e6;
             border-radius: 90px;
-            padding: 1.3rem 3rem;
-            margin: 1.5rem auto 2rem auto;
+            padding: clamp(0.8rem, 3vw, 1.3rem) clamp(1.5rem, 5vw, 3rem);
+            margin: 1rem auto 1.5rem auto;
             width: fit-content;
+            max-width: 95vw;
             border: 2px solid #35e6d0;
-            font-size: 2.1rem;
+            font-size: clamp(1.1rem, 4vw, 2.1rem);
             font-weight: 600;
             color: #e3fff9;
             box-shadow: 0 0 40px #36ffd5, 0 0 120px #008b7a;
@@ -157,6 +160,18 @@
             animation: cardPulse 6s infinite;
             position: relative;
             z-index: 10;
+            text-align: center;
+            white-space: nowrap;
+        }
+
+        /* small screens: allow wrapping */
+        @media (max-width: 600px) {
+            .current-time-card {
+                white-space: normal;
+                line-height: 1.4;
+                font-size: 1rem;
+                padding: 0.8rem 1.2rem;
+            }
         }
 
         @keyframes cardPulse {
@@ -165,20 +180,21 @@
             100% { box-shadow: 0 0 30px #2bffe0, 0 0 90px #007f6e; }
         }
 
-        /* quit row - no outer container */
+        /* quit row - responsive */
         .quit-row {
             display: flex;
             flex-wrap: wrap;
             align-items: center;
             justify-content: center;
-            gap: 1.5rem 2.5rem;
+            gap: clamp(0.8rem, 2vw, 1.5rem) clamp(1rem, 3vw, 2.5rem);
             background: #022a33aa;
             border-radius: 90px;
-            padding: 1.6rem 3.5rem;
-            margin: 0 auto 3rem auto;
+            padding: clamp(1rem, 3vw, 1.6rem) clamp(1.5rem, 4vw, 3.5rem);
+            margin: 0 auto 2rem auto;
             width: fit-content;
+            max-width: 98vw;
             border: 2px solid #2acfbb;
-            font-size: 2rem;
+            font-size: clamp(1.1rem, 3.5vw, 2rem);
             backdrop-filter: blur(8px);
             box-shadow: 0 0 50px #2cbba8;
             position: relative;
@@ -188,50 +204,78 @@
         .quit-label {
             display: flex;
             align-items: center;
-            gap: 20px;
+            gap: clamp(10px, 2vw, 20px);
             color: #befff3;
             font-weight: 600;
+            flex-wrap: wrap;
+            justify-content: center;
         }
 
         .quit-label i {
-            font-size: 2.8rem;
+            font-size: clamp(1.8rem, 5vw, 2.8rem);
         }
 
         .fixed-date {
             background: #0e4550;
             border: 2px solid #5affe6;
-            padding: 1.2rem 2.8rem;
+            padding: clamp(0.8rem, 2vw, 1.2rem) clamp(1.2rem, 4vw, 2.8rem);
             border-radius: 80px;
-            font-size: 2rem;
+            font-size: clamp(1.1rem, 3.5vw, 2rem);
             font-weight: 600;
             color: #f6ffe0;
             box-shadow: 0 0 30px #3dffd0, 0 0 90px #127a6b;
+            text-align: center;
+            white-space: nowrap;
         }
 
-        /* counter grid - completely free, no surrounding box */
+        @media (max-width: 500px) {
+            .fixed-date {
+                white-space: normal;
+                word-break: break-word;
+                font-size: 0.95rem;
+                padding: 0.6rem 1rem;
+            }
+            .quit-row {
+                flex-direction: column;
+                gap: 0.7rem;
+            }
+        }
+
+        /* counter grid - responsive flex */
         .counter-grid {
             display: flex;
             flex-wrap: wrap;
             justify-content: center;
-            gap: 2.2rem;
-            margin: 3rem auto 3rem auto;
+            gap: clamp(0.8rem, 2vw, 2.2rem);
+            margin: 1.5rem auto 1.5rem auto;
             max-width: 1400px;
             width: 100%;
             position: relative;
             z-index: 10;
+            padding: 0 0.5rem;
         }
 
         .stat-tile {
             background: #0c3843cc;
             backdrop-filter: blur(12px);
-            border-radius: 70px;
-            padding: 2.5rem 2rem;
-            min-width: 180px;
-            flex: 1 0 160px;
+            border-radius: clamp(40px, 8vw, 70px);
+            padding: clamp(1.2rem, 4vw, 2.5rem) clamp(0.8rem, 3vw, 2rem);
+            min-width: 110px;
+            flex: 1 1 130px;
+            max-width: 220px;
             border: 2px solid #42decb;
             box-shadow: 0 18px 35px -10px black, 0 0 30px #2fc6b2;
             transition: 0.2s;
             text-align: center;
+        }
+
+        /* for very small screens, allow tiles to be slightly smaller */
+        @media (max-width: 480px) {
+            .stat-tile {
+                min-width: 80px;
+                flex-basis: 80px;
+                padding: 1rem 0.5rem;
+            }
         }
 
         .stat-tile:hover {
@@ -241,7 +285,7 @@
         }
 
         .digit {
-            font-size: 6rem;
+            font-size: clamp(2.8rem, 10vw, 6rem);
             font-weight: 800;
             line-height: 1;
             background: linear-gradient(145deg, #fff9b0, #c6ffe6);
@@ -266,40 +310,52 @@
 
         .label {
             text-transform: uppercase;
-            letter-spacing: 3px;
-            font-size: 1.6rem;
+            letter-spacing: 2px;
+            font-size: clamp(0.9rem, 3vw, 1.6rem);
             font-weight: 600;
             color: #bcfaf0;
-            margin-top: 16px;
+            margin-top: 10px;
             text-shadow: 0 0 15px #2affe0;
         }
 
-        /* benefit panel - no outer box */
+        /* benefit panel - responsive */
         .benefit-panel {
             display: flex;
             flex-wrap: wrap;
-            gap: 2.2rem;
+            gap: clamp(1rem, 2.5vw, 2.2rem);
             justify-content: center;
-            margin: 2.5rem auto 2.5rem auto;
+            margin: 1.5rem auto 1.5rem auto;
             max-width: 1400px;
             width: 100%;
             position: relative;
             z-index: 10;
+            padding: 0 0.5rem;
         }
 
         .card {
             background: #083e4bb3;
-            border-radius: 70px;
-            padding: 2.4rem 2.5rem;
-            flex: 1 1 270px;
-            min-width: 280px;
+            border-radius: clamp(40px, 6vw, 70px);
+            padding: clamp(1.2rem, 3vw, 2.4rem) clamp(1.2rem, 3vw, 2.5rem);
+            flex: 1 1 240px;
+            min-width: 240px;
+            max-width: 400px;
             border: 2px solid #3bcbbc;
             backdrop-filter: blur(8px);
             display: flex;
             align-items: center;
-            gap: 30px;
+            gap: clamp(15px, 3vw, 30px);
             transition: 0.25s;
             box-shadow: 0 0 40px #218d7e;
+        }
+
+        @media (max-width: 600px) {
+            .card {
+                min-width: 100%;
+                flex-direction: column;
+                text-align: center;
+                gap: 0.8rem;
+                padding: 1.5rem 1rem;
+            }
         }
 
         .card:hover {
@@ -309,7 +365,7 @@
         }
 
         .card-icon {
-            font-size: 4.8rem;
+            font-size: clamp(3rem, 8vw, 4.8rem);
             filter: drop-shadow(0 0 20px #a1ffe6);
             animation: iconWaft 5s infinite alternate;
         }
@@ -320,7 +376,7 @@
         }
 
         .card-value {
-            font-size: 4.4rem;
+            font-size: clamp(2.4rem, 6vw, 4.4rem);
             font-weight: 800;
             line-height: 1.1;
             color: #ffffce;
@@ -329,39 +385,44 @@
         }
 
         .card-label {
-            font-size: 1.8rem;
+            font-size: clamp(1.2rem, 3.5vw, 1.8rem);
             font-weight: 600;
             color: #c9fff0;
         }
 
         .small-note {
-            font-size: 1.3rem;
+            font-size: clamp(0.9rem, 2.5vw, 1.3rem);
             opacity: 0.7;
         }
 
         /* footer note */
         .reset-note {
-            margin: 2rem auto 1rem auto;
-            font-size: 2rem;
+            margin: 1.5rem auto 0.5rem auto;
+            font-size: clamp(1.1rem, 3.5vw, 2rem);
             color: #dafff0;
             border-bottom: 2px dashed #3ea296;
-            padding-bottom: 1rem;
+            padding-bottom: 0.7rem;
             font-weight: 500;
             text-shadow: 0 0 15px #2bffd0;
             width: fit-content;
+            max-width: 95vw;
             position: relative;
             z-index: 10;
+            text-align: center;
+            line-height: 1.4;
+            word-break: break-word;
         }
 
         .live-indicator {
             display: inline-block;
-            width: 24px;
-            height: 24px;
+            width: clamp(16px, 3vw, 24px);
+            height: clamp(16px, 3vw, 24px);
             background: #3effb3;
             border-radius: 50%;
-            margin-right: 15px;
+            margin-right: 10px;
             animation: pulseBig 1.5s infinite;
             box-shadow: 0 0 25px #00ffb3;
+            vertical-align: middle;
         }
 
         @keyframes pulseBig {
@@ -379,66 +440,61 @@
 </head>
 <body>
 
-<!-- ========== SMOKY BACKGROUND LAYERS (ENHANCED) ========== -->
+<!-- ========== SMOKY BACKGROUND (same, just enough particles) ========== -->
 <script>
     (function() {
         // large floating smoke particles
-        for (let i = 0; i < 30; i++) {
+        for (let i = 0; i < 25; i++) {
             const p = document.createElement('div');
             p.className = 'smoke-particle';
-            const size = 50 + Math.random() * 150;
+            const size = 40 + Math.random() * 140;
             p.style.width = size + 'px';
             p.style.height = size * (0.5 + Math.random() * 0.6) + 'px';
             p.style.left = Math.random() * 100 + '%';
-            p.style.animationDuration = 18 + Math.random() * 30 + 's';
+            p.style.animationDuration = 16 + Math.random() * 28 + 's';
             p.style.animationDelay = Math.random() * -20 + 's';
-            p.style.background = `rgba(170, 250, 240, ${0.03 + Math.random() * 0.12})`;
-            p.style.filter = `blur(${12 + Math.random() * 24}px)`;
+            p.style.background = `rgba(170, 250, 240, ${0.02 + Math.random() * 0.12})`;
+            p.style.filter = `blur(${10 + Math.random() * 22}px)`;
             document.body.appendChild(p);
         }
-
-        // thin smoke trails
-        for (let i = 0; i < 18; i++) {
+        // thin smoke trails (fewer for performance)
+        for (let i = 0; i < 14; i++) {
             const trail = document.createElement('div');
             trail.className = 'smoke-trail';
             trail.style.left = Math.random() * 100 + '%';
-            trail.style.width = 4 + Math.random() * 12 + 'px';
-            trail.style.height = 40 + Math.random() * 100 + 'px';
-            trail.style.animationDuration = 8 + Math.random() * 12 + 's';
-            trail.style.animationDelay = Math.random() * -10 + 's';
-            trail.style.background = `linear-gradient(to top, rgba(200,255,240,${0.1+Math.random()*0.2}), transparent)`;
+            trail.style.width = 3 + Math.random() * 10 + 'px';
+            trail.style.height = 30 + Math.random() * 80 + 'px';
+            trail.style.animationDuration = 7 + Math.random() * 10 + 's';
+            trail.style.animationDelay = Math.random() * -8 + 's';
+            trail.style.background = `linear-gradient(to top, rgba(200,255,240,${0.08+Math.random()*0.15}), transparent)`;
             document.body.appendChild(trail);
         }
-
         // floating ash
-        for (let i = 0; i < 24; i++) {
+        for (let i = 0; i < 18; i++) {
             const ash = document.createElement('div');
             ash.className = 'cigarette-ash';
             ash.style.left = Math.random() * 100 + '%';
-            ash.style.width = 8 + Math.random() * 20 + 'px';
+            ash.style.width = 6 + Math.random() * 18 + 'px';
             ash.style.height = ash.style.width;
-            ash.style.animationDuration = 12 + Math.random() * 18 + 's';
-            ash.style.animationDelay = Math.random() * -15 + 's';
-            ash.style.background = `rgba(255, 200, 150, ${0.1 + Math.random() * 0.15})`;
-            ash.style.filter = `blur(${4 + Math.random() * 10}px)`;
+            ash.style.animationDuration = 10 + Math.random() * 16 + 's';
+            ash.style.animationDelay = Math.random() * -12 + 's';
+            ash.style.background = `rgba(255, 200, 150, ${0.08 + Math.random() * 0.12})`;
+            ash.style.filter = `blur(${3 + Math.random() * 8}px)`;
             document.body.appendChild(ash);
         }
-
-        // large glowing orbs
-        for (let i = 0; i < 7; i++) {
+        // large glowing orbs (fewer)
+        for (let i = 0; i < 5; i++) {
             const orb = document.createElement('div');
             orb.className = 'glow-orb-large';
             orb.style.left = Math.random() * 80 + '%';
             orb.style.top = Math.random() * 80 + '%';
             orb.style.background = `radial-gradient(circle at 30% 30%, ${i % 3 === 0 ? '#9effd0' : (i % 3 === 1 ? '#42cfc0' : '#d4ffb0')}, transparent 85%)`;
-            orb.style.animationDuration = 22 + i * 8 + 's';
-            orb.style.animationDelay = Math.random() * -10 + 's';
+            orb.style.animationDuration = 20 + i * 7 + 's';
+            orb.style.animationDelay = Math.random() * -8 + 's';
             document.body.appendChild(orb);
         }
     })();
 </script>
-
-<!-- NO CONTAINER DIV - everything floats freely in the smoky background -->
 
 <h1>
     <span>🚭</span> NO MORE CIGARETTES <span>🌿</span>
@@ -546,7 +602,9 @@
 
         function updateCounter() {
             const now = new Date();
-            currentTimeEl.innerHTML = `<span class="live-indicator"></span> ${formatCurrentBangladesh(now)}`;
+            // preserve live indicator: we need to keep the span
+            const indicatorSpan = '<span class="live-indicator"></span>';
+            currentTimeEl.innerHTML = indicatorSpan + ' ' + formatCurrentBangladesh(now);
 
             const diffSec = Math.floor((now.getTime() - startDate.getTime()) / 1000);
 
